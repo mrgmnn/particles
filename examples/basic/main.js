@@ -1,15 +1,16 @@
-import Particles from '../../src/Particles.js'
+import Particles, { Random, Vector2 } from '../../src/Particles.js'
 
 const node = document.getElementById('particles')
 
 const settings = {
-  debug: true, // boolean
+  debug: false, // boolean
   particles: {
-    amount: 150, // number
+    amount: 0, // number
     distanceToLink: 150, // number
     linkedParticles: true, // boolean
     maxVelocity: 0.8, // number
     maxRadius: 4, // number
+    color: 'rgba(0,0,0,1)'
   },
   renderer: {
     linearGradient: {
@@ -26,5 +27,34 @@ const settings = {
 }
 
 const particles = new Particles(node).init(settings).start()
+
+setInterval(() => {
+  const particle = particles.particleManager.createParticle()
+  particle.position.set(
+    Random.intBetween(
+      -settings.particles.distanceToLink,
+      settings.renderer.width + settings.particles.distanceToLink
+    ),
+    Random.intBetween(
+      -settings.particles.distanceToLink,
+      settings.renderer.height + settings.particles.distanceToLink
+    )
+  )
+
+  const velocity = new Vector2()
+  velocity.set(
+    Random.floatBetween(
+      -settings.particles.maxVelocity,
+      settings.particles.maxVelocity
+    ),
+    Random.floatBetween(
+      -settings.particles.maxVelocity,
+      settings.particles.maxVelocity
+    )
+  )
+  particle.velocity = velocity
+  // particle.radius = size
+  particle.color = 'rgba(0,0,0,1)'
+}, 1000)
 
 window.particles = particles

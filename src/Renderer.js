@@ -73,9 +73,11 @@ export default class Renderer {
   }
 
   drawParticles(ctx, particles) {
-    ctx.fillStyle = `rgba(255,255,255,0.5)`
+    const baseColor = `rgba(255,255,255,0.5)`
     ctx.beginPath()
     for (const particle of particles) {
+      console.log('drawing particles', baseColor, particle.color)
+      ctx.fillStyle = particle.color ?? baseColor;
       ctx.moveTo(particle.position.x, particle.position.y)
       ctx.arc(
         particle.position.x,

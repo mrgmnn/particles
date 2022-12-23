@@ -8,6 +8,8 @@ import Circle from './Circle.js'
 import Random from './Random.js'
 import Grid from './Grid.js'
 
+export { Random, Vector2 }; 
+
 export default class Particles {
   constructor(canvas) {
     this.canvas = canvas
@@ -35,7 +37,7 @@ export default class Particles {
     this.settings = null
 
     /** 'default' | 'quadTree' | 'grid' */
-    this.method = 'grid'
+    this.method = null
   }
 
   init(settings) {
@@ -45,6 +47,8 @@ export default class Particles {
 
     for (let a = 0; a < settings.particles.amount; a++) {
       const particle = this.particleManager.createParticle()
+
+      console.log(particle)
 
       particle.position.set(
         Random.intBetween(
@@ -348,3 +352,5 @@ export default class Particles {
     }
   }
 }
+
+
