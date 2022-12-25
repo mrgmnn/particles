@@ -8,10 +8,10 @@ import Circle from './Circle.js'
 import Random from './Random.js'
 import Grid from './Grid.js'
 
-export { Random, Vector2 }; 
+export { Random, Vector2 }
 
 export default class Particles {
-  constructor(canvas) {
+  constructor(canvas, options = {}) {
     this.canvas = canvas
 
     this.ctx = this.canvas.getContext('2d')
@@ -37,7 +37,9 @@ export default class Particles {
     this.settings = null
 
     /** 'default' | 'quadTree' | 'grid' */
-    this.method = null
+    this.method = 'grid'
+
+    this.drawGrid = false
   }
 
   init(settings) {
@@ -47,8 +49,6 @@ export default class Particles {
 
     for (let a = 0; a < settings.particles.amount; a++) {
       const particle = this.particleManager.createParticle()
-
-      console.log(particle)
 
       particle.position.set(
         Random.intBetween(
@@ -72,8 +72,11 @@ export default class Particles {
           settings.particles.maxVelocity
         )
       )
-      particle.velocity = velocity
 
+      particle.velocity = velocity
+      particle.color =
+        this.settings?.particles?.color || `rgba(255,255,255,0.5)`
+      particle.text = 'test'
       particle.radius = Random.floatBetween(1, settings.particles.maxRadius)
     }
 
@@ -88,7 +91,7 @@ export default class Particles {
 
     this.setSize(settings.renderer.width, settings.renderer.height)
 
-    this.changeSpatialGridTo(this.method)
+    this.changeSpatialGridTo(this.method, this.drawGrid)
 
     if (settings.renderer.linearGradient) {
       const gradient = this.ctx.createLinearGradient(
@@ -111,7 +114,7 @@ export default class Particles {
     this.isRunning = true
     window.requestAnimationFrame(this.boundUpdate)
 
-    console.info('Spark Partilces started!')
+    console.info('Spark Particles started!')
     return this
   }
 
@@ -152,7 +155,7 @@ export default class Particles {
 
     let lines = []
     if (this.settings.particles.linkedParticles) {
-      lines = this.linkPartiles(particles, distanceToLink)
+      lines = this.linkParticles(particles, distanceToLink)
     }
 
     const objectToRender = this.spatialGrid
@@ -176,7 +179,7 @@ export default class Particles {
     return this
   }
 
-  linkPartiles(particles, distanceToLink) {
+  linkParticles(particles, distanceToLink) {
     let lines = []
 
     switch (this.method) {
@@ -213,6 +216,7 @@ export default class Particles {
       case 'grid': {
         for (const particle of particles) {
           const pointA = particle.position
+          const colorA = particle.color
 
           const boundCircle = new Circle(
             particle.position.x,
@@ -222,8 +226,7 @@ export default class Particles {
 
           const inBoundPoints = this.spatialGrid
             .queryCircle(boundCircle)
-            .map((a) => a.position)
-          // console.log(particle, inBoundParticles)
+            .map((a) => ({ ...a.position, color: a.color }))
 
           for (const pointB of inBoundPoints) {
             if (pointA === pointB) {
@@ -237,10 +240,12 @@ export default class Particles {
             )
             const alpha = 1 - distance / distanceToLink
             line.alpha = alpha
+            line.colorFrom = colorA
+            line.colorTo = pointB.color
             lines.push(line)
           }
         }
-        // console.log(lines)
+
         const filtredLines = []
         for (let i = 0; i < lines.length - 1; i++) {
           const lineA = lines[i]
@@ -352,5 +357,3 @@ export default class Particles {
     }
   }
 }
-
-

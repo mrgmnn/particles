@@ -9,8 +9,8 @@ const settings = {
     distanceToLink: 150, // number
     linkedParticles: true, // boolean
     maxVelocity: 0.8, // number
-    maxRadius: 4, // number
-    color: 'rgba(0,0,0,1)'
+    maxRadius: 50, // number
+    // color: 'rgba(212,73,34,1)',
   },
   renderer: {
     linearGradient: {
@@ -28,33 +28,50 @@ const settings = {
 
 const particles = new Particles(node).init(settings).start()
 
-setInterval(() => {
-  const particle = particles.particleManager.createParticle()
-  particle.position.set(
-    Random.intBetween(
-      -settings.particles.distanceToLink,
-      settings.renderer.width + settings.particles.distanceToLink
-    ),
-    Random.intBetween(
-      -settings.particles.distanceToLink,
-      settings.renderer.height + settings.particles.distanceToLink
-    )
-  )
+const colors = [
+  'rgba(240,255,0,1)',
+  'rgba(194,249,112,1)',
+  'rgba(227,61,148, 1)',
+]
+const texts = [
+  'astmonster',
+  'internetshawna',
+  'buergi',
+  'marcusbmr',
+  'bati_mati',
+]
 
-  const velocity = new Vector2()
-  velocity.set(
-    Random.floatBetween(
-      -settings.particles.maxVelocity,
-      settings.particles.maxVelocity
-    ),
-    Random.floatBetween(
-      -settings.particles.maxVelocity,
-      settings.particles.maxVelocity
+setTimeout(() => {
+  for (let i = 0; i < 50; i += 1) {
+    const particle = particles.particleManager.createParticle()
+    particle.position.set(
+      Random.intBetween(
+        -settings.particles.distanceToLink,
+        settings.renderer.width + settings.particles.distanceToLink
+      ),
+      Random.intBetween(
+        -settings.particles.distanceToLink,
+        settings.renderer.height + settings.particles.distanceToLink
+      )
     )
-  )
-  particle.velocity = velocity
-  // particle.radius = size
-  particle.color = 'rgba(0,0,0,1)'
-}, 1000)
+
+    const velocity = new Vector2()
+    velocity.set(
+      Random.floatBetween(
+        -settings.particles.maxVelocity,
+        settings.particles.maxVelocity
+      ),
+      Random.floatBetween(
+        -settings.particles.maxVelocity,
+        settings.particles.maxVelocity
+      )
+    )
+    particle.velocity = velocity
+    particle.radius = 20
+    const random = Math.floor(Math.random() * colors.length)
+    particle.color = colors[random]
+    particle.text = texts[Math.floor(Math.random() * texts.length)]
+  }
+}, 500)
 
 window.particles = particles

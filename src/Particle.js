@@ -9,6 +9,8 @@ export class Particle {
     this.radius = 1
 
     this.color = `rgba(255,255,255,0.5)`
+
+    this.text = ''
   }
 
   update() {

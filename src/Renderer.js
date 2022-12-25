@@ -4,6 +4,15 @@ import { Particle } from './Particle.js'
 import Rectangle from './Rectangle.js'
 import Vector2 from './Vector2.js'
 
+const replaceAlpha = (color, alpha) => {
+  const splittedColor = color.replace('rgba(', '').replace(')').split(',')
+  if (splittedColor.lebgth === 3) {
+    return `rgba(${splittedColor.join(',')},${alpha})`
+  }
+  splittedColor[splittedColor.length - 1] = alpha
+  return `rgba(${splittedColor.join(',')})`
+}
+
 export default class Renderer {
   constructor(
     ctx,
@@ -44,9 +53,9 @@ export default class Renderer {
     )
     const circles = this.objectToRender.filter((obj) => obj instanceof Circle)
 
-    this.drawParticles(this.ctx, particles)
     this.drawLines(this.ctx, lines)
-    this.drawRectangles(this.ctx, rectangles)
+    this.drawParticles(this.ctx, particles)
+    // this.drawRectangles(this.ctx, rectangles)
     this.drawCircles(this.ctx, circles)
 
     if (this.debug) {
@@ -73,11 +82,9 @@ export default class Renderer {
   }
 
   drawParticles(ctx, particles) {
-    const baseColor = `rgba(255,255,255,0.5)`
-    ctx.beginPath()
     for (const particle of particles) {
-      console.log('drawing particles', baseColor, particle.color)
-      ctx.fillStyle = particle.color ?? baseColor;
+      ctx.fillStyle = particle.color
+      ctx.beginPath()
       ctx.moveTo(particle.position.x, particle.position.y)
       ctx.arc(
         particle.position.x,
@@ -86,14 +93,31 @@ export default class Renderer {
         0,
         Math.PI * 2
       )
+      ctx.fill()
+      ctx.closePath()
+      if (particle.text) {
+        ctx.font = '15px Arial'
+        ctx.fillText(
+          particle.text,
+          particle.position.x + particle.radius + 10,
+          particle.position.y + 6
+        )
+      }
     }
-    ctx.fill()
   }
 
   drawLines(ctx, lines) {
     ctx.lineWidth = 1
     for (const line of lines) {
-      ctx.strokeStyle = `rgba(255,255,255,${line.alpha})`
+      const gradient = ctx.createLinearGradient(
+        line.a.x,
+        line.a.y,
+        line.b.x,
+        line.b.y
+      )
+      gradient.addColorStop(0, replaceAlpha(line.colorFrom, line.alpha))
+      gradient.addColorStop(1, replaceAlpha(line.colorTo, line.alpha))
+      ctx.strokeStyle = gradient
       ctx.beginPath()
       ctx.moveTo(line.a.x, line.a.y)
       ctx.lineTo(line.b.x, line.b.y)

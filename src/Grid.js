@@ -16,8 +16,6 @@ export default class Grid {
     this.rectHeight = boundRectangle.size.y / size.y
 
     this.initReactangles(size, boundRectangle)
-
-    console.log(this)
   }
 
   initReactangles(size) {
