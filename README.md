@@ -1,12 +1,12 @@
 # Spark Particles
 
-![version](https://img.shields.io/npm/v/spark-particles?style=for-the-badge)
-![license](https://img.shields.io/npm/l/spark-particles?style=for-the-badge)
+![version](https://img.shields.io/npm/v/advanced-spark-particles?style=for-the-badge)
+![license](https://img.shields.io/npm/l/advanced-spark-particles?style=for-the-badge)
 ![language](https://img.shields.io/github/languages/top/gelltorn/particles?style=for-the-badge)
 ![issues](https://img.shields.io/github/issues/gelltorn/particles?style=for-the-badge)
-![npm downloads](https://img.shields.io/npm/dt/spark-particles?style=for-the-badge)
-![npm min bundle size](https://img.shields.io/bundlephobia/min/spark-particles?style=for-the-badge)
-![npm minzip bundle size](https://img.shields.io/bundlephobia/minzip/spark-particles?style=for-the-badge)
+![npm downloads](https://img.shields.io/npm/dt/advanced-spark-particles?style=for-the-badge)
+![npm min bundle size](https://img.shields.io/bundlephobia/min/advanced-spark-particles?style=for-the-badge)
+![npm minzip bundle size](https://img.shields.io/bundlephobia/minzip/advanced-spark-particles?style=for-the-badge)
 
 Lightweight and fast Particle library written in JavaScript
 
@@ -16,7 +16,7 @@ Zero Dependencies!
 
 ## Installation
 
-1. `npm i spark-particles --save`
+1. `npm i advanced-spark-particles --save`
 2. Done!
 
 ## Usage
@@ -24,7 +24,7 @@ Zero Dependencies!
 See Basic example
 
 ```javascript
-import Particles from 'spark-particles'
+import Particles from 'advanced-spark-particles'
 
 const canvas = document.getElementById('particles')
 
